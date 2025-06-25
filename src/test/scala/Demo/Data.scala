@@ -2,6 +2,6 @@ package Demo
 
 object Data{
     val url= "https://thinking-tester-contact-list.herokuapp.com/"
-    val email = "test@testudeachris.com"
-    val password = "12345678"
+    val email = "jsilvah@unal.edu.co"
+    val password = "123456789"
 }
