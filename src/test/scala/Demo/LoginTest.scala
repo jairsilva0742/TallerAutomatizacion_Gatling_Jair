@@ -2,7 +2,7 @@ package Demo
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import Demo.Data._
+
 
 class LoginTest extends Simulation{
   //Acá se define la base de datos para obtener los contactos
