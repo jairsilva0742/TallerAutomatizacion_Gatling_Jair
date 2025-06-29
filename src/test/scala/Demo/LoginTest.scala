@@ -22,14 +22,9 @@ class LoginTest extends Simulation{
       .check(jsonPath("$.token").saveAs("authToken"))
     )
   .exec { session =>
-    if (session.contains("authToken")) {
-      println(s"✅ Login exitoso para: ${session("email").as[String]}")
-    } else {
-      val email = session("email").as[String]
-      val errorMsg = session("errorMessage").asOption[String].getOrElse("Error desconocido")
-      println(s"❌ Login fallido para $email: $errorMsg")
-      session.markAsFailed
-    }
+    if (session.isFailed) {
+      println("Incorrect email or password")
+    } 
     session
   }
 
