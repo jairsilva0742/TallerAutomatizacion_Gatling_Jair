@@ -5,7 +5,7 @@ import io.gatling.http.Predef._
 import Demo.Data._
 
 class LoginTest extends Simulation{
-
+  val feeder = csv("contactos.csv").circular
   // 1 Http Conf
   val httpConf = http.baseUrl(url)
     .acceptHeader("application/json")
@@ -21,16 +21,31 @@ class LoginTest extends Simulation{
       .check(status.is(200))
       .check(jsonPath("$.token").saveAs("authToken"))
     )
+  .feed(feeder)
   .exec(
       http("Create Contact")
         .post(s"contacts")
         .header("Authorization", "Bearer ${authToken}")
-        .body(StringBody(s"""{"firstName": "Javier","lastName": "Silva","birthdate": "1960-12-01","email": "jdoe@fake.com","phone": "8005555555","street1": "1 Main St.","street2": "Apartment A","city": "Anytown","stateProvince": "KS","postalCode": "12345","country": "USA"}""")).asJson
+        .body(StringBody(
+        """{
+          "firstName": "${firstName}",
+          "lastName": "${lastName}",
+          "birthdate": "${birthdate}",
+          "email": "${email}",
+          "phone": "${phone}",
+          "street1": "${street1}",
+          "street2": "${street2}",
+          "city": "${city}",
+          "stateProvince": "${stateProvince}",
+          "postalCode": "${postalCode}",
+          "country": "${country}"
+        }"""
+      )).asJson
         .check(status.is(201))
     )
 
   // 3 Load Scenario
   setUp(
-    scn.inject(rampUsersPerSec(5).to(15).during(30))
+    scn.inject(rampUsersPerSec(2).to(8).during(30))
   ).protocols(httpConf);
 }
