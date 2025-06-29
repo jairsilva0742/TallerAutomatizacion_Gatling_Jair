@@ -5,6 +5,7 @@ import io.gatling.http.Predef._
 import Demo.Data._
 
 class LoginTest extends Simulation{
+  //Acá se define la base de datos para obtener los contactos
   val feeder = csv("contactos.csv").circular
   // 1 Http Conf
   val httpConf = http.baseUrl(url)
@@ -14,6 +15,16 @@ class LoginTest extends Simulation{
 
   // 2 Definicion de escenario
   val scn = scenario("Login")
+  .feed(loginFeeder)
+  .exec { session =>
+    if (email.contains("@") && email.contains(".")) {
+      session // Email válido, continúa
+    } else {
+      println("Email inválido")
+      session.markAsFailed
+    }
+  }
+  .exitHereIfFailed
   .exec(http("login")
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
@@ -23,6 +34,7 @@ class LoginTest extends Simulation{
     )
   .exec { session =>
     if (session.isFailed) {
+      //Si el inicio de sesion falla se envía mensaje solicitado
       println("Incorrect email or password")
     } 
     session
