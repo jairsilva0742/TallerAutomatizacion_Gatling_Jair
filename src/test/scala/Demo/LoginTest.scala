@@ -9,6 +9,7 @@ class LoginTest extends Simulation{
   val feeder = csv("contactos.csv").circular
   val loginFeeder = csv("usuarios.csv").circular
   // 1 Http Conf
+  .feed(loginFeeder)
   val httpConf = http.baseUrl(url)
     .acceptHeader("application/json")
     //Verificar de forma general para todas las solicitudes
