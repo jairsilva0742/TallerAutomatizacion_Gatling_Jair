@@ -13,8 +13,22 @@ class LoginTest extends Simulation{
     .check(status.is(200))
 
   // 2 Definicion de escenario
-  val scn = scenario("Login").
-    exec(http("login")
+  val scn = scenario("Login")
+  .feed(loginFeeder)
+  .exec { session =>
+    val email = session("email").as[String]
+    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$".r
+
+    email match {
+      case emailRegex() =>
+        session // Email válido, continúa
+      case _ =>
+        println(s"⚠️ Email inválido detectado: $email — se detiene el escenario")
+        session.markAsFailed // Se puede usar exitHere o marcar fallo
+    }
+  }
+  .exitHereIfFailed // Detiene el usuario si el email era inválido
+  .exec(http("login")
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
