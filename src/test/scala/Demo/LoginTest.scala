@@ -5,12 +5,12 @@ import io.gatling.http.Predef._
 
 
 class LoginTest extends Simulation{
-  //Acá se define la base de datos para obtener los contactos
+  //Acá se define la base de datos para obtener los contactos y los login
   val feeder = csv("contactos.csv").circular
   val loginFeeder = csv("usuarios.csv").circular
   // 1 Http Conf
-  .feed(loginFeeder)
-  val httpConf = http.baseUrl(url)
+  
+  val httpConf = http.baseUrl("https://thinking-tester-contact-list.herokuapp.com/")
     .acceptHeader("application/json")
     //Verificar de forma general para todas las solicitudes
     .check(status.is(200))
@@ -35,7 +35,7 @@ class LoginTest extends Simulation{
       //Si el inicio de sesion falla se envía mensaje solicitado
       println("Incorrect email or password")
     } 
-    if (!(email.contains("@") && email.contains("."))) {
+    if (!(email.contains("@") || email.contains("."))) {
       println("Email inválido")
       session.markAsFailed
     }
