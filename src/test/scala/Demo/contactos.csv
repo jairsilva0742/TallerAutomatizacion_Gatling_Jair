@@ -1,0 +1,5 @@
+firstName,lastName,birthdate,email,phone,street1,street2,city,stateProvince,postalCode,country
+Juan,Perez,1980-05-12,juan.perez@example.com,8001234567,Calle 1,Apto 2,Bogotá,DC,110111,Colombia
+Maria,Gomez,1975-03-22,maria.gomez@example.com,8007654321,Carrera 7,Oficina 3,Medellín,Antioquia,050021,Colombia
+Jaime,Gomez,1920-03-15,jaimr.gomez@gmail.com,8007654321,Carrera 7,Oficina 4,Bogotá,Distrito Capital,030021,Colombia
+Carlos,Thola,1940-03-05,Carlos.Thola@gmail.com,15048923,Carrera 1 4-5,Oficina 14,Bogotá,Distrito Capital,08991,Colombia
