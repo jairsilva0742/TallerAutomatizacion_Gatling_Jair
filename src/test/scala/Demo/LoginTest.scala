@@ -15,16 +15,6 @@ class LoginTest extends Simulation{
 
   // 2 Definicion de escenario
   val scn = scenario("Login")
-  .feed(loginFeeder)
-  .exec { session =>
-    if (email.contains("@") && email.contains(".")) {
-      session // Email válido, continúa
-    } else {
-      println("Email inválido")
-      session.markAsFailed
-    }
-  }
-  .exitHereIfFailed
   .exec(http("login")
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
@@ -37,6 +27,10 @@ class LoginTest extends Simulation{
       //Si el inicio de sesion falla se envía mensaje solicitado
       println("Incorrect email or password")
     } 
+    if (!(email.contains("@") && email.contains("."))) {
+      println("Email inválido")
+      session.markAsFailed
+    }
     session
   }
 
