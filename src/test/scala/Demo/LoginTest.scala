@@ -12,7 +12,7 @@ class LoginTest extends Simulation{
     //Verificar de forma general para todas las solicitudes
     .check(status.is(200))
 
-  // 2 Scenario Definition
+  // 2 Definicion de escenario
   val scn = scenario("Login").
     exec(http("login")
       .post(s"users/login")
