@@ -18,15 +18,8 @@ class LoginTest extends Simulation{
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
-      .check(
-        status.is(200)
-          .orElse(
-            status.is(401),
-            status.is(400)
-          ),
-        jsonPath("$.message").optional.saveAs("errorMessage"),
-        jsonPath("$.token").optional.saveAs("authToken")
-      )
+      .check(status.is(200))
+      .check(jsonPath("$.token").saveAs("authToken"))
     )
   .exec { session =>
     if (session.contains("authToken")) {
