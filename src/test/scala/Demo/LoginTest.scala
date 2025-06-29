@@ -19,6 +19,11 @@ class LoginTest extends Simulation{
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
       .check(status.is(200))
+         .otherwise( // Si el status es diferente, muestra mensaje de error
+            exec(session => {
+              println(s"❌ Incorrect email or password")
+              session.markAsFailed
+            })
       .check(jsonPath("$.token").saveAs("authToken"))
     )
   .feed(feeder)
