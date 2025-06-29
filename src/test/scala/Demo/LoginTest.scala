@@ -18,11 +18,28 @@ class LoginTest extends Simulation{
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
-      .check(status.is(200))
+      .check(status.is(200)
     
          
-      .check(jsonPath("$.token").saveAs("authToken"))
+      .and(jsonPath("$.token").saveAs("authToken")),
+             jsonPath("$.message").optional.saveAs("errorMessage")
+      )
+      .exitHereIfFailed
     )
+  .exec { session =>
+    // Comprobamos si vino el token
+    if (session.contains("authToken")) {
+      println(s"✅ Login exitoso para ${session("email").as[String]}")
+    } else {
+      val email = session("email").asOption[String].getOrElse("usuario desconocido")
+      val errorMsg = session("errorMessage").asOption[String].getOrElse("Sin mensaje de error")
+      println(s"❌ Login fallido para $email. Mensaje recibido: $errorMsg")
+      
+      // Aquí simulas que el usuario permanece en la página de login
+      session.markAsFailed // Gatling lo marca como un error en el reporte
+    }
+    session
+  }
   .feed(feeder)
   .exec(
       http("Create Contact")
