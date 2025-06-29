@@ -7,6 +7,7 @@ import Demo.Data._
 class LoginTest extends Simulation{
   //Acá se define la base de datos para obtener los contactos
   val feeder = csv("contactos.csv").circular
+  val loginFeeder = csv("usuarios.csv").circular
   // 1 Http Conf
   val httpConf = http.baseUrl(url)
     .acceptHeader("application/json")
@@ -15,9 +16,15 @@ class LoginTest extends Simulation{
 
   // 2 Definicion de escenario
   val scn = scenario("Login")
+  .feed(loginFeeder) 
   .exec(http("login")
       .post(s"users/login")
-      .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
+      .body(StringBody(
+        """{
+          "email": "${email}",
+          "password": "${password}"
+        }"""
+      )).asJson
          //Validar status 200 del servicio
       .check(status.is(200))
       .check(jsonPath("$.token").saveAs("authToken"))
