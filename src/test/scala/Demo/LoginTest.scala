@@ -59,7 +59,7 @@ class LoginTest extends Simulation{
           "country": "${country}"
         }"""
       )).asJson
-        .check(status.is(201))
+        .check(status.is(200))
     )
     setUp(
     scn.inject(rampUsersPerSec(1).to(4).during(5))
