@@ -31,10 +31,10 @@ class LoginTest extends Simulation{
       println("Email inválido")
       session.markAsFailed
     }
-    //if (session.isFailed) {
+    if (session.isFailed) {
       //Si el inicio de sesion falla se envía mensaje solicitado
-      //println("Incorrect email or password")
-    //} 
+      println("Incorrect email or password")
+    } 
     
     session
   }
