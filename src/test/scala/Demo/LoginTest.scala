@@ -27,14 +27,15 @@ class LoginTest extends Simulation{
     )
 
   .exec { session =>
-    if (session.isFailed) {
-      //Si el inicio de sesion falla se envía mensaje solicitado
-      println("Incorrect email or password")
-    } 
     if (!(email.contains("@") || email.contains("."))) {
       println("Email inválido")
       session.markAsFailed
     }
+    if (session.isFailed) {
+      //Si el inicio de sesion falla se envía mensaje solicitado
+      println("Incorrect email or password")
+    } 
+    
     session
   }
 
