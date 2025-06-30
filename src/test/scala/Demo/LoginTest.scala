@@ -2,23 +2,24 @@ package Demo
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import Demo.Data._
+//import Demo.Data._
 
 
 class LoginTest extends Simulation{
   //Acá se define la base de datos para obtener los contactos y los login
   val feeder = csv("contactos.csv").circular
-  //val loginFeeder = csv("usuarios.csv").circular
+  val loginFeeder = csv("usuarios.csv").circular
   // 1 Http Conf
   
-  //val httpConf = http.baseUrl("https://thinking-tester-contact-list.herokuapp.com/")
-  val httpConf = http.baseUrl(url)
+  val httpConf = http.baseUrl("https://thinking-tester-contact-list.herokuapp.com/")
+  //val httpConf = http.baseUrl(url)
     .acceptHeader("application/json")
     //Verificar de forma general para todas las solicitudes
     .check(status.is(200))
 
   // 2 Definicion de escenario
   val scn = scenario("Login") 
+  .feed(loginFeeder)
   .exec(http("login")
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
