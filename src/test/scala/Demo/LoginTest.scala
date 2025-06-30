@@ -62,6 +62,7 @@ class LoginTest extends Simulation{
         .check(status.is(200))
     )
     setUp(
+    scn.inject(atOnceUsers(3)),
     scn.inject(rampUsersPerSec(1).to(4).during(5))
   ).protocols(httpConf);
 
