@@ -60,9 +60,9 @@ class LoginTest extends Simulation{
       )).asJson
         .check(status.is(201))
     )
-  setUp(
-  scn.inject(atOnceUsers(1)) // Ejecuta 1 usuario inmediatamente
-).protocols(httpConf)
+    setUp(
+    scn.inject(rampUsersPerSec(1).to(4).during(5))
+  ).protocols(httpConf);
 
   
 }
