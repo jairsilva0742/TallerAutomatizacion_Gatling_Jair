@@ -18,20 +18,15 @@ class LoginTest extends Simulation{
     .check(status.is(200))
 
   // 2 Definicion de escenario
-  val scn = scenario("Login")
-  //.feed(loginFeeder) 
+  val scn = scenario("Login") 
   .exec(http("login")
       .post(s"users/login")
-      .body(StringBody(
-        """{
-          "email": "${email}",
-          "password": "${password}"
-        }"""
-      )).asJson
+      .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
       .check(status.is(200))
       .check(jsonPath("$.token").saveAs("authToken"))
     )
+
   .exec { session =>
     if (session.isFailed) {
       //Si el inicio de sesion falla se envía mensaje solicitado
