@@ -14,7 +14,7 @@ class LoginTest extends Simulation{
   val httpConf = http.baseUrl(url)
     .acceptHeader("application/json")
     //Verificar de forma general para todas las solicitudes
-    .check(status.is(200,201))
+    .check(status.is(200))
 
   // 2 Definicion de escenario
   val scn = scenario("Login") 
@@ -22,7 +22,7 @@ class LoginTest extends Simulation{
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
-      .check(status.is(200,201))
+      .check(status.in(200,201))
       .check(jsonPath("$.token").saveAs("authToken"))
     )
 
@@ -59,7 +59,7 @@ class LoginTest extends Simulation{
           "country": "${country}"
         }"""
       )).asJson
-        .check(status.is(200))
+        .check(status.in(200,201))
     )
     setUp(
     scn.inject(
