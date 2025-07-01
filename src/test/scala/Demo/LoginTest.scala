@@ -23,7 +23,7 @@ class LoginTest extends Simulation{
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
-      .check(status.in(200,201))
+      .check(status.is(200))
       .check(jsonPath("$.token").saveAs("authToken"))
     )
 
@@ -60,7 +60,7 @@ class LoginTest extends Simulation{
           "country": "${country}"
         }"""
       )).asJson
-        .check(status.in(200,201))
+        .check(status.is(201))
     )
     setUp(
     scn.inject(rampUsers(10).during(50))
