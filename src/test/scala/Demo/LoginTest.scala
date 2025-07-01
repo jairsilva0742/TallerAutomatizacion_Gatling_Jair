@@ -17,12 +17,12 @@ class LoginTest extends Simulation{
     .check(status.is(200))
 
   // 2 Definicion de escenario
-  val scn = scenario("Login") 
-  .exec(http("login")
+  val scn = scenario("Login")
+    .exec(http("login")
       .post(s"users/login")
       .body(StringBody(s"""{"email": "$email", "password": "$password"}""")).asJson
          //Validar status 200 del servicio
-      .check(status.in(200,201))
+      .check(status.is(200))
       .check(jsonPath("$.token").saveAs("authToken"))
     )
 
@@ -44,7 +44,7 @@ class LoginTest extends Simulation{
       http("Create Contact")
         .post(s"contacts")
         .header("Authorization", "Bearer ${authToken}")
-        .body(StringBody(
+        .body(StringBody(s
         """{
           "firstName": "${firstName}",
           "lastName": "${lastName}",
