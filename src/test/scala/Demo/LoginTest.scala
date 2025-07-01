@@ -5,6 +5,7 @@ import io.gatling.http.Predef._
 import Demo.Data._
 
 
+
 class LoginTest extends Simulation{
   //Acá se define la base de datos para obtener los contactos y los login
   val feeder = csv("contactos.csv").circular
